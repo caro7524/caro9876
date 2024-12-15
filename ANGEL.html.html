@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SingUp & LogIn</title>
+</head>
+<body>
+    <!-- Sign Up -->
+    <form>
+        <input type="text" id="s_username" placeholder="Username">
+        <input type="password" id="s_pwd" placeholder="Password">
+        <button type="button" onclick="signUp()">Sign Up</button>
+    </form>
+
+    <!-- Log In -->
+    <form>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="pwd" placeholder="Password">
+        <button type="button" onclick="logIn()">Log In</button>
+    </form>
+
+<script>
+    function signUp() {
+        const adminName = document.getElementById("s_username").value;
+        const pass = document.getElementById("s_pwd").value;
+
+           if (!adminName || !pass) {
+            alert("Please enter a username and password!");
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        const duplicate = users.find(user => user.username === adminName);
+        if (duplicate) {
+            alert("Username already exists!");
+            return;
+        }
+
+        users.push({
+            username: adminName,
+            password: pass
+        });
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        console.log("User signed up:", adminName, pass);
+        document.getElementById("s_username").value = '';
+        document.getElementById("s_pwd").value = '';
+
+        alert("You have been successfully signed up!");
+    }
+
+    function logIn() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("pwd").value;
+
+        if (!username || !password) {
+            alert("Please enter a username and password!");
+            return;
+        }
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(user => user.username === username && user.password === password);
+
+        if (user) {
+            alert("Login successful!");
+            console.log("Logged in user:", user);
+        } else {
+            alert("Invalid credentials!");
+            console.log("No matching user found");
+        }
+    }
+</script>
+</body>
+</html>
